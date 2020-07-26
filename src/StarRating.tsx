@@ -16,6 +16,7 @@ type StarRatingProps = {
     emptyColor?: string;
     maxStars?: number;
     starSize?: number;
+    enableHalfStar?: boolean;
     style?: StyleProp<ViewStyle>;
 };
 
@@ -29,10 +30,22 @@ const StarRating: React.FC<StarRatingProps> = ({
     onChange,
     color = defaultColor,
     emptyColor,
+    enableHalfStar = true,
     style,
 }) => {
     const layout = useRef<{ x: number; width: number }>();
     const ref = useRef<View>(null);
+
+    const handleInteraction = (x: number) => {
+        if (layout.current) {
+            const relX = x - layout.current.x;
+            const newRating = Math.max(
+                minRating,
+                Math.ceil((relX / layout.current.width) * maxStars * 2) / 2
+            );
+            onChange(enableHalfStar ? newRating : Math.ceil(newRating));
+        }
+    };
 
     const panResponder = useRef(
         PanResponder.create({
@@ -41,24 +54,10 @@ const StarRating: React.FC<StarRatingProps> = ({
             onMoveShouldSetPanResponder: () => true,
             onMoveShouldSetPanResponderCapture: () => true,
             onPanResponderMove: (_, gestureEvent) => {
-                if (layout.current) {
-                    const x = gestureEvent.moveX - layout.current.x;
-                    const newRating = Math.max(
-                        minRating,
-                        Math.ceil((x / layout.current.width) * maxStars * 2) / 2
-                    );
-                    onChange(newRating);
-                }
+                handleInteraction(gestureEvent.moveX);
             },
             onPanResponderStart: (_, gestureEvent) => {
-                if (layout.current) {
-                    const x = gestureEvent.x0 - layout.current.x;
-                    const newRating = Math.max(
-                        minRating,
-                        Math.ceil((x / layout.current.width) * maxStars * 2) / 2
-                    );
-                    onChange(newRating);
-                }
+                handleInteraction(gestureEvent.x0);
             },
         })
     );
