@@ -12,16 +12,22 @@ type StarRatingProps = {
     rating: number;
     onChange: (rating: number) => void;
     minRating?: number;
+    filledColor?: string;
+    emptyColor?: string;
+    maxStars?: number;
     style?: StyleProp<ViewStyle>;
 };
 
-export const yellow = "#fdd835";
-export const yellowLight = "#fff176";
+const defaultFilledColor = "#fdd835";
+const defaultEmptyColor = "#fff176";
 
 const StarRating: React.FC<StarRatingProps> = ({
     rating,
+    maxStars = 5,
     minRating = 1,
     onChange,
+    filledColor = defaultFilledColor,
+    emptyColor = defaultEmptyColor,
     style,
 }) => {
     const layout = useRef<{ x: number; width: number }>();
@@ -38,7 +44,7 @@ const StarRating: React.FC<StarRatingProps> = ({
                     const x = gestureEvent.moveX - layout.current.x;
                     const newRating = Math.max(
                         minRating,
-                        Math.ceil((x / layout.current.width) * 10)
+                        Math.ceil((x / layout.current.width) * maxStars)
                     );
                     onChange(newRating);
                 }
@@ -48,7 +54,7 @@ const StarRating: React.FC<StarRatingProps> = ({
                     const x = gestureEvent.x0 - layout.current.x;
                     const newRating = Math.max(
                         minRating,
-                        Math.ceil((x / layout.current.width) * 10)
+                        Math.ceil((x / layout.current.width) * maxStars)
                     );
                     onChange(newRating);
                 }
@@ -69,16 +75,16 @@ const StarRating: React.FC<StarRatingProps> = ({
                     );
                 }
             }}>
-            {[...Array(5)].map((_, i) => {
+            {[...Array(maxStars)].map((_, i) => {
                 const icon = (() => {
-                    if (rating - i * 2 >= 2) {
-                        return <StarFull size={32} color={yellow} />;
+                    if (rating - i >= 1) {
+                        return <StarFull size={32} color={filledColor} />;
                     }
 
-                    return rating - i * 2 >= 1 ? (
-                        <StarHalf size={32} color={yellow} />
+                    return rating - i >= 0.5 ? (
+                        <StarHalf size={32} color={filledColor} />
                     ) : (
-                        <StarBorder size={32} color={yellowLight} />
+                        <StarBorder size={32} color={emptyColor} />
                     );
                 })();
                 return (

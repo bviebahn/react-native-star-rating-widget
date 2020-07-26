@@ -11,17 +11,24 @@
         "src/"
     ],
     "repository": "https://github.com/benediktviebahn/react-native-star-rating-widget",
+    "publishConfig": {
+        "registry": "https://npm.pkg.github.com/"
+    },
     "author": "Benedikt Viebahn",
     "license": "MIT",
+    "keywords": [
+        "react",
+        "react-native",
+        "rating",
+        "star rating"
+    ],
     "scripts": {
         "prepare": "bob build",
         "lint": "eslint . --ext .js,.jsx,.ts,.tsx"
     },
     "peerDependencies": {
         "react": "*",
-        "react-native": "*"
-    },
-    "dependencies": {
+        "react-native": "*",
         "react-native-svg": "^12.1.0"
     },
     "devDependencies": {
