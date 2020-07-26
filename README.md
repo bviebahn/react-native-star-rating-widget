@@ -1,12 +1,10 @@
 # react-native-star-widget
 
+![Screenshot](https://github.com/benediktviebahn/react-native-star-rating-widget/raw/master/media/screenshot.png)
+
 ## Installation
 1. install react-native-star-widget
-`npm install react-native-star-widget --save`
-
-or
-
-`yarn add react-native-star-widget`
+`npm install react-native-star-rating-widget --save` or `yarn add react-native-star-rating-widget`
 2. if not already installed, add [react-native-svg](https://github.com/react-native-community/react-native-svg)
 
 ## Usage
