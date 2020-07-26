@@ -12,22 +12,23 @@ type StarRatingProps = {
     rating: number;
     onChange: (rating: number) => void;
     minRating?: number;
-    filledColor?: string;
+    color?: string;
     emptyColor?: string;
     maxStars?: number;
+    starSize?: number;
     style?: StyleProp<ViewStyle>;
 };
 
-const defaultFilledColor = "#fdd835";
-const defaultEmptyColor = "#fff176";
+const defaultColor = "#fdd835";
 
 const StarRating: React.FC<StarRatingProps> = ({
     rating,
     maxStars = 5,
-    minRating = 1,
+    minRating = 0.5,
+    starSize = 32,
     onChange,
-    filledColor = defaultFilledColor,
-    emptyColor = defaultEmptyColor,
+    color = defaultColor,
+    emptyColor = defaultColor,
     style,
 }) => {
     const layout = useRef<{ x: number; width: number }>();
@@ -78,13 +79,13 @@ const StarRating: React.FC<StarRatingProps> = ({
             {[...Array(maxStars)].map((_, i) => {
                 const icon = (() => {
                     if (rating - i >= 1) {
-                        return <StarFull size={32} color={filledColor} />;
+                        return <StarFull size={starSize} color={color} />;
                     }
 
                     return rating - i >= 0.5 ? (
-                        <StarHalf size={32} color={filledColor} />
+                        <StarHalf size={starSize} color={color} />
                     ) : (
-                        <StarBorder size={32} color={emptyColor} />
+                        <StarBorder size={starSize} color={emptyColor} />
                     );
                 })();
                 return (

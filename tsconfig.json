@@ -8,7 +8,6 @@
         "forceConsistentCasingInFileNames": true,
         "jsx": "react-native",
         "declaration": true,
-        "outDir": "./lib"
     },
     "include": ["./src"]
 }
