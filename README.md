@@ -1,4 +1,4 @@
-# react-native-star-widget
+# react-native-star-rating-widget
 
 ![Screenshot](https://github.com/benediktviebahn/react-native-star-rating-widget/raw/master/media/screenshot.png)
 
