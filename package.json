@@ -11,9 +11,6 @@
         "src/"
     ],
     "repository": "https://github.com/benediktviebahn/react-native-star-rating-widget",
-    "publishConfig": {
-        "registry": "https://npm.pkg.github.com/"
-    },
     "author": "Benedikt Viebahn",
     "license": "MIT",
     "keywords": [
