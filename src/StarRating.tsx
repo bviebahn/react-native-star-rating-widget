@@ -44,7 +44,7 @@ const StarRating: React.FC<StarRatingProps> = ({
                     const x = gestureEvent.moveX - layout.current.x;
                     const newRating = Math.max(
                         minRating,
-                        Math.ceil((x / layout.current.width) * maxStars)
+                        Math.ceil((x / layout.current.width) * maxStars * 2) / 2
                     );
                     onChange(newRating);
                 }
@@ -54,7 +54,7 @@ const StarRating: React.FC<StarRatingProps> = ({
                     const x = gestureEvent.x0 - layout.current.x;
                     const newRating = Math.max(
                         minRating,
-                        Math.ceil((x / layout.current.width) * maxStars)
+                        Math.ceil((x / layout.current.width) * maxStars * 2) / 2
                     );
                     onChange(newRating);
                 }
@@ -143,6 +143,7 @@ const StarHalf: React.FC<IconProps> = ({ size, color }) => (
 const styles = StyleSheet.create({
     starRating: {
         flexDirection: "row",
+        alignSelf: "flex-start",
     },
     star: {
         marginHorizontal: 5,
