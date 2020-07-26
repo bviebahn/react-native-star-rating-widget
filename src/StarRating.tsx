@@ -28,7 +28,7 @@ const StarRating: React.FC<StarRatingProps> = ({
     starSize = 32,
     onChange,
     color = defaultColor,
-    emptyColor = defaultColor,
+    emptyColor,
     style,
 }) => {
     const layout = useRef<{ x: number; width: number }>();
@@ -85,7 +85,10 @@ const StarRating: React.FC<StarRatingProps> = ({
                     return rating - i >= 0.5 ? (
                         <StarHalf size={starSize} color={color} />
                     ) : (
-                        <StarBorder size={starSize} color={emptyColor} />
+                        <StarBorder
+                            size={starSize}
+                            color={emptyColor || color}
+                        />
                     );
                 })();
                 return (
