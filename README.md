@@ -3,12 +3,16 @@
 ## Installation
 1. install react-native-star-widget
 `npm install react-native-star-widget --save`
+
 or
+
 `yarn add react-native-star-widget`
 2. if not already installed, add [react-native-svg](https://github.com/react-native-community/react-native-svg)
 
 ## Usage
 ```js
+import StarRating from 'react-native-star-rating-widget';
+
 const Example = () => {
   const [rating, setRating] = useState(0);
   return (
@@ -30,4 +34,4 @@ const Example = () => {
 | starSize   | number               | 32              | star size                                        |
 | color      | string               | "#fdd835"       | star color                                       |
 | emptyColor | string               | same as `color` | empty star color                                 |
-| style      | StyleProp<ViewStyle> | undefined       | optional style                                   |
+| style      | object               | undefined       | optional style                                   |
