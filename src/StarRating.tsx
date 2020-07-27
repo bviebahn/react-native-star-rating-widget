@@ -1,12 +1,21 @@
-import React, { useRef } from "react";
+import React, { useRef, useEffect, useState } from "react";
 import {
     PanResponder,
     StyleSheet,
     View,
     StyleProp,
     ViewStyle,
+    Animated,
+    Easing,
 } from "react-native";
 import Svg, { G, Path, Rect } from "react-native-svg";
+
+type AnimationConfig = {
+    easing?: (value: number) => number;
+    duration?: number;
+    delay?: number;
+    scale?: number;
+};
 
 type StarRatingProps = {
     rating: number;
@@ -18,9 +27,16 @@ type StarRatingProps = {
     starSize?: number;
     enableHalfStar?: boolean;
     style?: StyleProp<ViewStyle>;
+    animationConfig?: AnimationConfig;
 };
 
 const defaultColor = "#fdd835";
+const defaultAnimationConfig: Required<AnimationConfig> = {
+    easing: Easing.elastic(2),
+    duration: 300,
+    scale: 1.2,
+    delay: 0,
+};
 
 const StarRating: React.FC<StarRatingProps> = ({
     rating,
@@ -29,12 +45,14 @@ const StarRating: React.FC<StarRatingProps> = ({
     starSize = 32,
     onChange,
     color = defaultColor,
-    emptyColor,
+    emptyColor = color,
     enableHalfStar = true,
+    animationConfig = defaultAnimationConfig,
     style,
 }) => {
     const layout = useRef<{ x: number; width: number }>();
     const ref = useRef<View>(null);
+    const [isInteracting, setInteracting] = useState(false);
 
     const handleInteraction = (x: number) => {
         if (layout.current) {
@@ -58,6 +76,12 @@ const StarRating: React.FC<StarRatingProps> = ({
             },
             onPanResponderStart: (_, gestureEvent) => {
                 handleInteraction(gestureEvent.x0);
+                setInteracting(true);
+            },
+            onPanResponderEnd: () => {
+                setTimeout(() => {
+                    setInteracting(false);
+                }, animationConfig.delay || defaultAnimationConfig.delay);
             },
         })
     );
@@ -84,19 +108,64 @@ const StarRating: React.FC<StarRatingProps> = ({
                     return rating - i >= 0.5 ? (
                         <StarHalf size={starSize} color={color} />
                     ) : (
-                        <StarBorder
-                            size={starSize}
-                            color={emptyColor || color}
-                        />
+                        <StarBorder size={starSize} color={emptyColor} />
                     );
                 })();
                 return (
-                    <View key={i} style={styles.star}>
+                    <AnimatedIcon
+                        key={i}
+                        active={isInteracting && rating - i >= 0.5}
+                        animationConfig={animationConfig}>
                         {icon}
-                    </View>
+                    </AnimatedIcon>
                 );
             })}
         </View>
+    );
+};
+
+type AnimatedIconProps = {
+    active: boolean;
+    children: React.ReactElement;
+    animationConfig: AnimationConfig;
+};
+
+const AnimatedIcon: React.FC<AnimatedIconProps> = ({
+    active,
+    animationConfig,
+    children,
+}) => {
+    const {
+        scale = defaultAnimationConfig.scale,
+        easing = defaultAnimationConfig.easing,
+        duration = defaultAnimationConfig.duration,
+    } = animationConfig;
+    const animatedSize = useRef(new Animated.Value(active ? scale : 1));
+    useEffect(() => {
+        const animation = Animated.timing(animatedSize.current, {
+            toValue: active ? scale : 1,
+            useNativeDriver: true,
+            easing,
+            duration,
+        });
+
+        animation.start();
+        return animation.stop;
+    }, [active, scale, easing, duration]);
+    return (
+        <Animated.View
+            style={[
+                styles.star,
+                {
+                    transform: [
+                        {
+                            scale: animatedSize.current,
+                        },
+                    ],
+                },
+            ]}>
+            {children}
+        </Animated.View>
     );
 };
 
