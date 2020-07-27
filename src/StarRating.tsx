@@ -35,7 +35,7 @@ const defaultAnimationConfig: Required<AnimationConfig> = {
     easing: Easing.elastic(2),
     duration: 300,
     scale: 1.2,
-    delay: 0,
+    delay: 300,
 };
 
 const StarRating: React.FC<StarRatingProps> = ({
