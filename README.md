@@ -25,18 +25,18 @@ const Example = () => {
 ```
 
 ## Props
-| Name            | Type                 | Default          | Description                                      |
-| --------------- | -------------------- | ---------------- | ------------------------------------------------ |
-| rating          | number               | **REQUIRED**     | Rating Value. Should be between 0 and `maxStars` |
-| onChange        | (number) => void     | **REQUIRED**     | called when rating changes                       |
-| maxStars        | number               | 5                | number of stars                                  |
-| minRating       | number               | 0.5              | minimum selectable rating                        |
-| starSize        | number               | 32               | star size                                        |
-| color           | string               | "#fdd835"        | star color                                       |
-| emptyColor      | string               | same as `color`  | empty star color                                 |
-| style           | object               | undefined        | optional style                                   |
-| enableHalfStar  | boolean              | true             | enable or disable display of half stars          |
-| animationConfig | see [AnimationConfig](#animationConfig) | animation configuration object                   |
+| Name            | Type                                    | Default          | Description                                           |
+| --------------- | --------------------------------------- | ---------------- | ----------------------------------------------------- |
+| rating          | number                                  | **REQUIRED**     | Rating Value. Should be between 0 and `maxStars`      |
+| onChange        | (number) => void                        | **REQUIRED**     | called when rating changes                            |
+| maxStars        | number                                  | 5                | number of stars                                       |
+| minRating       | number                                  | 0.5              | minimum selectable rating                             |
+| starSize        | number                                  | 32               | star size                                             |
+| color           | string                                  | "#fdd835"        | star color                                            |
+| emptyColor      | string                                  | same as `color`  | empty star color                                      |
+| style           | object                                  | undefined        | optional style                                        |
+| enableHalfStar  | boolean                                 | true             | enable or disable display of half stars               |
+| animationConfig | see [AnimationConfig](#animationConfig) | see [AnimationConfig](#animationConfig) | animation configuration object |
 
 ### AnimationConfig
 | Name     | Type               | Default           | Description                                |
