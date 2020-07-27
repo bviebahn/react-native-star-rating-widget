@@ -2,6 +2,8 @@
 
 [![npm version](https://badge.fury.io/js/react-native-star-rating-widget.svg)](https://badge.fury.io/js/react-native-star-rating-widget)
 
+A customizable, animated star rating component for React Native. Compatible with iOS and Android. Written in Typescript.
+
 ![Demo](https://github.com/benediktviebahn/react-native-star-rating-widget/raw/master/media/demo.gif)
 
 ## Installation
