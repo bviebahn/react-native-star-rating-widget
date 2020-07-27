@@ -1,5 +1,7 @@
 # react-native-star-rating-widget
 
+[![npm version](https://badge.fury.io/js/react-native-star-rating-widget.svg)](https://badge.fury.io/js/react-native-star-rating-widget)
+
 ![Screenshot](https://github.com/benediktviebahn/react-native-star-rating-widget/raw/master/media/screenshot.png)
 
 ## Installation
