@@ -28,6 +28,7 @@ type StarRatingProps = {
     enableHalfStar?: boolean;
     style?: StyleProp<ViewStyle>;
     animationConfig?: AnimationConfig;
+    testID?: string;
 };
 
 const defaultColor = "#fdd835";
@@ -49,6 +50,7 @@ const StarRating: React.FC<StarRatingProps> = ({
     enableHalfStar = true,
     animationConfig = defaultAnimationConfig,
     style,
+    testID,
 }) => {
     const layout = useRef<{ x: number; width: number }>();
     const ref = useRef<View>(null);
@@ -98,7 +100,8 @@ const StarRating: React.FC<StarRatingProps> = ({
                             (layout.current = { x: pageX, width })
                     );
                 }
-            }}>
+            }}
+            testID={testID}>
             {[...Array(maxStars)].map((_, i) => {
                 const icon = (() => {
                     if (rating - i >= 1) {
@@ -140,7 +143,9 @@ const AnimatedIcon: React.FC<AnimatedIconProps> = ({
         easing = defaultAnimationConfig.easing,
         duration = defaultAnimationConfig.duration,
     } = animationConfig;
+
     const animatedSize = useRef(new Animated.Value(active ? scale : 1));
+
     useEffect(() => {
         const animation = Animated.timing(animatedSize.current, {
             toValue: active ? scale : 1,
@@ -152,6 +157,7 @@ const AnimatedIcon: React.FC<AnimatedIconProps> = ({
         animation.start();
         return animation.stop;
     }, [active, scale, easing, duration]);
+
     return (
         <Animated.View
             style={[
