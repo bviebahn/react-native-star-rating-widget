@@ -27,6 +27,7 @@ type StarRatingProps = {
     starSize?: number;
     enableHalfStar?: boolean;
     style?: StyleProp<ViewStyle>;
+    starStyle?: StyleProp<ViewStyle>;
     animationConfig?: AnimationConfig;
     testID?: string;
 };
@@ -50,6 +51,7 @@ const StarRating: React.FC<StarRatingProps> = ({
     enableHalfStar = true,
     animationConfig = defaultAnimationConfig,
     style,
+    starStyle,
     testID,
 }) => {
     const layout = useRef<{ x: number; width: number }>();
@@ -118,7 +120,8 @@ const StarRating: React.FC<StarRatingProps> = ({
                     <AnimatedIcon
                         key={i}
                         active={isInteracting && rating - i >= 0.5}
-                        animationConfig={animationConfig}>
+                        animationConfig={animationConfig}
+                        style={starStyle}>
                         {icon}
                     </AnimatedIcon>
                 );
@@ -131,12 +134,14 @@ type AnimatedIconProps = {
     active: boolean;
     children: React.ReactElement;
     animationConfig: AnimationConfig;
+    style?: StyleProp<ViewStyle>;
 };
 
 const AnimatedIcon: React.FC<AnimatedIconProps> = ({
     active,
     animationConfig,
     children,
+    style,
 }) => {
     const {
         scale = defaultAnimationConfig.scale,
@@ -162,6 +167,7 @@ const AnimatedIcon: React.FC<AnimatedIconProps> = ({
         <Animated.View
             style={[
                 styles.star,
+                style,
                 {
                     transform: [
                         {
