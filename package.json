@@ -10,7 +10,7 @@
         "lib/",
         "src/"
     ],
-    "repository": "https://github.com/benediktviebahn/react-native-star-rating-widget",
+    "repository": "https://github.com/bviebahn/react-native-star-rating-widget",
     "author": "Benedikt Viebahn",
     "license": "MIT",
     "keywords": [
