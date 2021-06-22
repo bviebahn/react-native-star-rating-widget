@@ -37,6 +37,7 @@ const Example = () => {
 | color           | string                                  | "#fdd835"        | star color                                            |
 | emptyColor      | string                                  | same as `color`  | empty star color                                      |
 | style           | object                                  | undefined        | optional style                                        |
+| starStyle       | object                                  | undefined        | optional star style                                   |
 | enableHalfStar  | boolean                                 | true             | enable or disable display of half stars               |
 | animationConfig | see [AnimationConfig](#animationConfig) | see [AnimationConfig](#animationConfig) | animation configuration object |
 
