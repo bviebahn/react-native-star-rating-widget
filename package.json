@@ -1,6 +1,6 @@
 {
     "name": "react-native-star-rating-widget",
-    "version": "1.0.18",
+    "version": "1.0.19",
     "description": "A star rating widget for react native",
     "main": "lib/commonjs/index.js",
     "module": "lib/module/index.js",
