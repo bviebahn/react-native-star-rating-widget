@@ -61,9 +61,12 @@ const StarRating: React.FC<StarRatingProps> = ({
     const handleInteraction = (x: number) => {
         if (layout.current) {
             const relX = x - layout.current.x;
-            const newRating = Math.max(
-                minRating,
-                Math.ceil((relX / layout.current.width) * maxStars * 2) / 2
+            const newRating = Math.min(
+                Math.max(
+                    minRating,
+                    Math.ceil((relX / layout.current.width) * maxStars * 2) / 2
+                ),
+                maxStars
             );
             onChange(enableHalfStar ? newRating : Math.ceil(newRating));
         }
