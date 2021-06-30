@@ -26,6 +26,7 @@ type StarRatingProps = {
     maxStars?: number;
     starSize?: number;
     enableHalfStar?: boolean;
+    enableSwiping?: boolean;
     style?: StyleProp<ViewStyle>;
     starStyle?: StyleProp<ViewStyle>;
     animationConfig?: AnimationConfig;
@@ -49,24 +50,21 @@ const StarRating: React.FC<StarRatingProps> = ({
     color = defaultColor,
     emptyColor = color,
     enableHalfStar = true,
+    enableSwiping = true,
     animationConfig = defaultAnimationConfig,
     style,
     starStyle,
     testID,
 }) => {
-    const layout = useRef<{ x: number; width: number }>();
+    const width = useRef<number>();
     const ref = useRef<View>(null);
     const [isInteracting, setInteracting] = useState(false);
 
     const handleInteraction = (x: number) => {
-        if (layout.current) {
-            const relX = x - layout.current.x;
-            const newRating = Math.min(
-                Math.max(
-                    minRating,
-                    Math.ceil((relX / layout.current.width) * maxStars * 2) / 2
-                ),
-                maxStars
+        if (width.current) {
+            const newRating = Math.max(
+                minRating,
+                Math.ceil((x / width.current) * maxStars * 2) / 2
             );
             onChange(enableHalfStar ? newRating : Math.ceil(newRating));
         }
@@ -78,11 +76,13 @@ const StarRating: React.FC<StarRatingProps> = ({
             onStartShouldSetPanResponderCapture: () => true,
             onMoveShouldSetPanResponder: () => true,
             onMoveShouldSetPanResponderCapture: () => true,
-            onPanResponderMove: (_, gestureEvent) => {
-                handleInteraction(gestureEvent.moveX);
+            onPanResponderMove: e => {
+                if (enableSwiping) {
+                    handleInteraction(e.nativeEvent.locationX);
+                }
             },
-            onPanResponderStart: (_, gestureEvent) => {
-                handleInteraction(gestureEvent.x0);
+            onPanResponderStart: e => {
+                handleInteraction(e.nativeEvent.locationX);
                 setInteracting(true);
             },
             onPanResponderEnd: () => {
@@ -100,10 +100,7 @@ const StarRating: React.FC<StarRatingProps> = ({
             {...panResponder.current.panHandlers}
             onLayout={() => {
                 if (ref.current) {
-                    ref.current.measure(
-                        (_x, _y, width, _h, pageX) =>
-                            (layout.current = { x: pageX, width })
-                    );
+                    ref.current.measure((_x, _y, w, _h) => (width.current = w));
                 }
             }}
             testID={testID}>
@@ -168,6 +165,7 @@ const AnimatedIcon: React.FC<AnimatedIconProps> = ({
 
     return (
         <Animated.View
+            pointerEvents="none"
             style={[
                 styles.star,
                 style,

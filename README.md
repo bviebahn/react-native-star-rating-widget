@@ -39,6 +39,7 @@ const Example = () => {
 | style           | object                                  | undefined        | optional style                                        |
 | starStyle       | object                                  | undefined        | optional star style                                   |
 | enableHalfStar  | boolean                                 | true             | enable or disable display of half stars               |
+| enableSwiping   | boolean                                 | true             | enable or disable swiping                             |
 | animationConfig | see [AnimationConfig](#animationConfig) | see [AnimationConfig](#animationConfig) | animation configuration object |
 
 ### AnimationConfig
