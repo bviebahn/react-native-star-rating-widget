@@ -49,3 +49,5 @@ const Example = () => {
 | duration | number             | 300               | animation duration                         |
 | delay    | number             | 300               | animation delay when interaction has ended |
 | easing   | (number) => number | Easing.elastic(2) | animation easing function                  |
+
+A `StarRatingDisplay` component without any interaction functionality is exported as well.
