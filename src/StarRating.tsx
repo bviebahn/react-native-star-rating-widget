@@ -71,7 +71,7 @@ const StarRating: React.FC<StarRatingProps> = ({
         }
     };
 
-    const panResponder = useRef(
+    const [panResponder] = useState(() =>
         PanResponder.create({
             onStartShouldSetPanResponder: () => true,
             onStartShouldSetPanResponderCapture: () => true,
@@ -98,7 +98,7 @@ const StarRating: React.FC<StarRatingProps> = ({
         <View
             ref={ref}
             style={[styles.starRating, style]}
-            {...panResponder.current.panHandlers}
+            {...panResponder.panHandlers}
             onLayout={() => {
                 if (ref.current) {
                     ref.current.measure((_x, _y, w, _h) => (width.current = w));
