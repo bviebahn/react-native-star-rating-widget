@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useState } from "react";
+import React from "react";
 import {
     PanResponder,
     StyleSheet,
@@ -56,25 +56,31 @@ const StarRating: React.FC<StarRatingProps> = ({
     starStyle,
     testID,
 }) => {
-    const width = useRef<number>();
-    const ref = useRef<View>(null);
-    const [isInteracting, setInteracting] = useState(false);
+    const width = React.useRef<number>();
+    const ref = React.useRef<View>(null);
+    const [isInteracting, setInteracting] = React.useState(false);
 
-    const handleInteraction = (x: number) => {
-        if (width.current) {
-            const newRating = Math.max(
-                0,
-                Math.min(
-                    Math.round((x / width.current) * maxStars * 2 + 0.2) / 2,
-                    maxStars
-                )
-            );
-            onChange(enableHalfStar ? newRating : Math.ceil(newRating));
-        }
-    };
+    const handleInteraction = React.useCallback(
+        (x: number) => {
+            if (width.current) {
+                const newRating = Math.max(
+                    0,
+                    Math.min(
+                        Math.round((x / width.current) * maxStars * 2 + 0.2) /
+                            2,
+                        maxStars
+                    )
+                );
+                if (newRating !== rating) {
+                    onChange(enableHalfStar ? newRating : Math.ceil(newRating));
+                }
+            }
+        },
+        [enableHalfStar, maxStars, onChange, rating]
+    );
 
-    const [panResponder] = useState(() =>
-        PanResponder.create({
+    const panResponder = React.useMemo(() => {
+        return PanResponder.create({
             onStartShouldSetPanResponder: () => true,
             onStartShouldSetPanResponderCapture: () => true,
             onMoveShouldSetPanResponder: () => true,
@@ -93,8 +99,8 @@ const StarRating: React.FC<StarRatingProps> = ({
                     setInteracting(false);
                 }, animationConfig.delay || defaultAnimationConfig.delay);
             },
-        })
-    );
+        });
+    }, [animationConfig.delay, enableSwiping, handleInteraction]);
 
     return (
         <View
@@ -145,9 +151,9 @@ const AnimatedIcon: React.FC<AnimatedIconProps> = ({
         duration = defaultAnimationConfig.duration,
     } = animationConfig;
 
-    const animatedSize = useRef(new Animated.Value(active ? scale : 1));
+    const animatedSize = React.useRef(new Animated.Value(active ? scale : 1));
 
-    useEffect(() => {
+    React.useEffect(() => {
         const animation = Animated.timing(animatedSize.current, {
             toValue: active ? scale : 1,
             useNativeDriver: true,
