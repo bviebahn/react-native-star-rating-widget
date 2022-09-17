@@ -28,6 +28,8 @@ type StarRatingProps = {
     starSize?: number;
     enableHalfStar?: boolean;
     enableSwiping?: boolean;
+    onRatingStart?: () => void;
+    onRatingEnd?: () => void;
     style?: StyleProp<ViewStyle>;
     starStyle?: StyleProp<ViewStyle>;
     animationConfig?: AnimationConfig;
@@ -51,6 +53,8 @@ const StarRating: React.FC<StarRatingProps> = ({
     emptyColor = color,
     enableHalfStar = true,
     enableSwiping = true,
+    onRatingStart,
+    onRatingEnd,
     animationConfig = defaultAnimationConfig,
     style,
     starStyle,
@@ -91,16 +95,24 @@ const StarRating: React.FC<StarRatingProps> = ({
                 }
             },
             onPanResponderStart: e => {
+                onRatingStart?.();
                 handleInteraction(e.nativeEvent.locationX);
                 setInteracting(true);
             },
             onPanResponderEnd: () => {
+                onRatingEnd?.();
                 setTimeout(() => {
                     setInteracting(false);
                 }, animationConfig.delay || defaultAnimationConfig.delay);
             },
         });
-    }, [animationConfig.delay, enableSwiping, handleInteraction]);
+    }, [
+        animationConfig.delay,
+        enableSwiping,
+        handleInteraction,
+        onRatingStart,
+        onRatingEnd,
+    ]);
 
     return (
         <View
