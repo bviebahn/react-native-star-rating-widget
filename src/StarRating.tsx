@@ -7,6 +7,7 @@ import {
     ViewStyle,
     Animated,
     Easing,
+    I18nManager,
 } from "react-native";
 import StarIcon from "./StarIcon";
 import { getStars } from "./utils";
@@ -65,8 +66,12 @@ const StarRating: React.FC<StarRatingProps> = ({
     const [isInteracting, setInteracting] = React.useState(false);
 
     const handleInteraction = React.useCallback(
-        (x: number) => {
+        (x: number, isRTL = I18nManager.isRTL) => {
             if (width.current) {
+                if (isRTL) {
+                    handleInteraction(width.current - x, false);
+                    return;
+                }
                 const newRating = Math.max(
                     0,
                     Math.min(
