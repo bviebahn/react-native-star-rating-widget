@@ -1,5 +1,8 @@
 {
     "compilerOptions": {
+        "paths": {
+            "react-native-star-rating-widget": ["./src/index"]
+        },
         "target": "es5",
         "module": "commonjs",
         "strict": true,
