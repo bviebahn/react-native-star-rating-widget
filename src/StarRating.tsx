@@ -122,31 +122,35 @@ const StarRating: React.FC<StarRatingProps> = ({
     ]);
 
     return (
-        <View
-            ref={ref}
-            style={[styles.starRating, style]}
-            {...panResponder.panHandlers}
-            onLayout={() => {
-                if (ref.current) {
-                    ref.current.measure((_x, _y, w, _h) => (width.current = w));
-                }
-            }}
-            testID={testID}>
-            {getStars(rating, maxStars).map((starType, i) => {
-                return (
-                    <AnimatedIcon
-                        key={i}
-                        active={isInteracting && rating - i >= 0.5}
-                        animationConfig={animationConfig}
-                        style={starStyle}>
-                        <StarIconComponent
-                            type={starType}
-                            size={starSize}
-                            color={starType === "empty" ? emptyColor : color}
-                        />
-                    </AnimatedIcon>
-                );
-            })}
+        <View style={style}>
+            <View
+                ref={ref}
+                style={styles.starRating}
+                {...panResponder.panHandlers}
+                onLayout={() => {
+                    ref.current?.measure(
+                        (_x, _y, w, _h) => (width.current = w)
+                    );
+                }}
+                testID={testID}>
+                {getStars(rating, maxStars).map((starType, i) => {
+                    return (
+                        <AnimatedIcon
+                            key={i}
+                            active={isInteracting && rating - i >= 0.5}
+                            animationConfig={animationConfig}
+                            style={starStyle}>
+                            <StarIconComponent
+                                type={starType}
+                                size={starSize}
+                                color={
+                                    starType === "empty" ? emptyColor : color
+                                }
+                            />
+                        </AnimatedIcon>
+                    );
+                })}
+            </View>
         </View>
     );
 };

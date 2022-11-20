@@ -33,7 +33,7 @@ const StarRatingDisplay = ({
         <View style={[styles.starRating, style]} testID={testID}>
             {getStars(rating, maxStars).map((starType, i) => {
                 return (
-                    <View key={i} style={starStyle}>
+                    <View key={i} style={[styles.star, starStyle]}>
                         <StarIconComponent
                             type={starType}
                             size={starSize}
@@ -49,7 +49,6 @@ const StarRatingDisplay = ({
 const styles = StyleSheet.create({
     starRating: {
         flexDirection: "row",
-        alignSelf: "flex-start",
     },
     star: {
         marginHorizontal: 5,
