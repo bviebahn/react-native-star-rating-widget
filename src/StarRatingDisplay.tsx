@@ -1,6 +1,6 @@
 import React from "react";
 import { StyleSheet, View, StyleProp, ViewStyle } from "react-native";
-import StarIcon from "./StarIcon";
+import StarIcon, { StarIconProps } from "./StarIcon";
 import { getStars } from "./utils";
 
 type Props = {
@@ -12,6 +12,7 @@ type Props = {
     enableHalfStar?: boolean;
     style?: StyleProp<ViewStyle>;
     starStyle?: StyleProp<ViewStyle>;
+    StarIconComponent?: (props: StarIconProps) => JSX.Element;
     testID?: string;
 };
 
@@ -25,6 +26,7 @@ const StarRatingDisplay = ({
     emptyColor = color,
     style,
     starStyle,
+    StarIconComponent = StarIcon,
     testID,
 }: Props) => {
     return (
@@ -32,7 +34,7 @@ const StarRatingDisplay = ({
             {getStars(rating, maxStars).map((starType, i) => {
                 return (
                     <View key={i} style={starStyle}>
-                        <StarIcon
+                        <StarIconComponent
                             type={starType}
                             size={starSize}
                             color={starType === "empty" ? emptyColor : color}
