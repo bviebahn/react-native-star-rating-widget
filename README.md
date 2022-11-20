@@ -27,21 +27,22 @@ const Example = () => {
 ```
 
 ## Props
-| Name            | Type                                    | Default          | Description                                           |
-| --------------- | --------------------------------------- | ---------------- | ----------------------------------------------------- |
-| rating          | number                                  | **REQUIRED**     | Rating Value. Should be between 0 and `maxStars`      |
-| onChange        | (number) => void                        | **REQUIRED**     | called when rating changes                            |
-| maxStars        | number                                  | 5                | number of stars                                       |
-| starSize        | number                                  | 32               | star size                                             |
-| color           | string                                  | "#fdd835"        | star color                                            |
-| emptyColor      | string                                  | same as `color`  | empty star color                                      |
-| style           | object                                  | undefined        | optional style                                        |
-| starStyle       | object                                  | undefined        | optional star style                                   |
-| enableHalfStar  | boolean                                 | true             | enable or disable display of half stars               |
-| enableSwiping   | boolean                                 | true             | enable or disable swiping                             |
-| onRatingStart   | () => void                              | undefined        | called when user starts interaction                   |
-| onRatingEnd     | () => void                              | undefined        | called when user ends interaction                     |
-| animationConfig | see [AnimationConfig](#animationConfig) | see [AnimationConfig](#animationConfig) | animation configuration object |
+| Name              | Type                                    | Default          | Description                                           |
+| ----------------- | --------------------------------------- | ---------------- | ----------------------------------------------------- |
+| rating            | number                                  | **REQUIRED**     | Rating Value. Should be between 0 and `maxStars`      |
+| onChange          | (number) => void                        | **REQUIRED**     | called when rating changes                            |
+| maxStars          | number                                  | 5                | number of stars                                       |
+| starSize          | number                                  | 32               | star size                                             |
+| color             | string                                  | "#fdd835"        | star color                                            |
+| emptyColor        | string                                  | same as `color`  | empty star color                                      |
+| style             | object                                  | undefined        | optional style                                        |
+| starStyle         | object                                  | undefined        | optional star style                                   |
+| enableHalfStar    | boolean                                 | true             | enable or disable display of half stars               |
+| enableSwiping     | boolean                                 | true             | enable or disable swiping                             |
+| onRatingStart     | () => void                              | undefined        | called when user starts interaction                   |
+| onRatingEnd       | () => void                              | undefined        | called when user ends interaction                     |
+| animationConfig   | see [AnimationConfig](#animationConfig) | see [AnimationConfig](#animationConfig) | animation configuration object |
+| StarIconComponent | (props: { size: number; color: string; type: "full" \| "half" \| "empty"; }) => JSX.Element | [StarIcon](https://github.com/bviebahn/react-native-star-rating-widget/blob/master/src/StarIcon.tsx)                    | Icon component                                        |
 
 ### AnimationConfig
 | Name     | Type               | Default           | Description                                |
