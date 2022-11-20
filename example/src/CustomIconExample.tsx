@@ -1,6 +1,7 @@
 import * as React from "react";
 import Svg, { SvgProps, Path } from "react-native-svg";
 import StarRating, { StarIconProps } from "react-native-star-rating-widget";
+import ExampleContainer from "./ExampleContainer";
 
 const HeartEmpty = (props: SvgProps) => (
     <Svg viewBox="0 0 512 512" {...props}>
@@ -36,12 +37,14 @@ const CustomIconExample = () => {
     const [rating, setRating] = React.useState(2.5);
 
     return (
-        <StarRating
-            rating={rating}
-            onChange={setRating}
-            StarIconComponent={HeartIcon}
-            color="tomato"
-        />
+        <ExampleContainer title="Custom Icon Example">
+            <StarRating
+                rating={rating}
+                onChange={setRating}
+                StarIconComponent={HeartIcon}
+                color="tomato"
+            />
+        </ExampleContainer>
     );
 };
 

@@ -1,21 +1,29 @@
 import * as React from "react";
 
-import { StyleSheet, View } from "react-native";
+import { ScrollView, StyleSheet } from "react-native";
 import BasicExample from "./BasicExample";
 import CustomIconExample from "./CustomIconExample";
+import StarRatingDisplayExample from "./StarRatingDisplayExample";
 
 export default function App() {
     return (
-        <View style={styles.container}>
+        <ScrollView
+            style={styles.container}
+            contentContainerStyle={styles.content}>
             <BasicExample />
             <CustomIconExample />
-        </View>
+            <StarRatingDisplayExample />
+        </ScrollView>
     );
 }
 
 const styles = StyleSheet.create({
     container: {
+        backgroundColor: "#ddd",
+    },
+    content: {
         flex: 1,
+        paddingHorizontal: 32,
         alignItems: "center",
         justifyContent: "center",
     },
