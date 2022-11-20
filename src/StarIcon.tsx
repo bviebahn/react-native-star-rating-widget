@@ -2,12 +2,13 @@ import React from "react";
 import { I18nManager, ViewStyle } from "react-native";
 import Svg, { Path, Rect } from "react-native-svg";
 
-type IconProps = {
+export type StarIconProps = {
     size: number;
     color: string;
+    type: "full" | "half" | "empty";
 };
 
-const StarBorder: React.FC<IconProps> = ({ size, color }) => (
+const StarBorder = ({ size, color }: Omit<StarIconProps, "type">) => (
     <Svg height={size} viewBox="0 0 24 24" width={size}>
         <Path
             fill={color}
@@ -16,7 +17,7 @@ const StarBorder: React.FC<IconProps> = ({ size, color }) => (
     </Svg>
 );
 
-const StarFull: React.FC<IconProps> = ({ size, color }) => (
+const StarFull = ({ size, color }: Omit<StarIconProps, "type">) => (
     <Svg height={size} viewBox="0 0 24 24" width={size}>
         <Path d="M0 0h24v24H0z" fill="none" />
         <Path d="M0 0h24v24H0z" fill="none" />
@@ -31,7 +32,7 @@ const RTL_TRANSFORM: ViewStyle = {
     transform: [{ rotateY: "180deg" }],
 };
 
-const StarHalf: React.FC<IconProps> = ({ size, color }) => (
+const StarHalf = ({ size, color }: Omit<StarIconProps, "type">) => (
     <Svg
         height={size}
         viewBox="0 0 24 24"
@@ -45,11 +46,7 @@ const StarHalf: React.FC<IconProps> = ({ size, color }) => (
     </Svg>
 );
 
-const StarIcon = ({
-    type,
-    size,
-    color,
-}: IconProps & { type: "full" | "half" | "empty" }) => {
+const StarIcon = ({ type, size, color }: StarIconProps) => {
     const Component =
         type === "full" ? StarFull : type === "half" ? StarHalf : StarBorder;
 

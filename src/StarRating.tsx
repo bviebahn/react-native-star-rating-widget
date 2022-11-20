@@ -9,7 +9,7 @@ import {
     Easing,
     I18nManager,
 } from "react-native";
-import StarIcon from "./StarIcon";
+import StarIcon, { StarIconProps } from "./StarIcon";
 import { getStars } from "./utils";
 
 type AnimationConfig = {
@@ -34,6 +34,7 @@ type StarRatingProps = {
     style?: StyleProp<ViewStyle>;
     starStyle?: StyleProp<ViewStyle>;
     animationConfig?: AnimationConfig;
+    StarIconComponent?: (props: StarIconProps) => JSX.Element;
     testID?: string;
 };
 
@@ -59,6 +60,7 @@ const StarRating: React.FC<StarRatingProps> = ({
     animationConfig = defaultAnimationConfig,
     style,
     starStyle,
+    StarIconComponent = StarIcon,
     testID,
 }) => {
     const width = React.useRef<number>();
@@ -137,7 +139,7 @@ const StarRating: React.FC<StarRatingProps> = ({
                         active={isInteracting && rating - i >= 0.5}
                         animationConfig={animationConfig}
                         style={starStyle}>
-                        <StarIcon
+                        <StarIconComponent
                             type={starType}
                             size={starSize}
                             color={starType === "empty" ? emptyColor : color}
