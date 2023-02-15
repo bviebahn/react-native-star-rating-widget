@@ -64,7 +64,6 @@ const StarRating: React.FC<StarRatingProps> = ({
   testID,
 }) => {
   const width = React.useRef<number>();
-  const ref = React.useRef<View>(null);
   const [isInteracting, setInteracting] = React.useState(false);
 
   const handleInteraction = React.useCallback(
@@ -123,7 +122,6 @@ const StarRating: React.FC<StarRatingProps> = ({
   return (
     <View style={style}>
       <View
-        ref={ref}
         style={styles.starRating}
         {...panResponder.panHandlers}
         onLayout={(e) => {
