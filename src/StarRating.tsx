@@ -126,8 +126,8 @@ const StarRating: React.FC<StarRatingProps> = ({
         ref={ref}
         style={styles.starRating}
         {...panResponder.panHandlers}
-        onLayout={() => {
-          ref.current?.measure((_x, _y, w, _h) => (width.current = w));
+        onLayout={(e) => {
+          width.current = e.nativeEvent.layout.width;
         }}
         testID={testID}
       >
