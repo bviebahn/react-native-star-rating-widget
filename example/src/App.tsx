@@ -20,9 +20,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#ddd',
   },
   content: {
-    flex: 1,
-    paddingHorizontal: 32,
+    padding: 32,
     alignItems: 'center',
-    justifyContent: 'center',
   },
 });
