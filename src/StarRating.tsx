@@ -120,9 +120,8 @@ const StarRating: React.FC<StarRatingProps> = ({
   ]);
 
   return (
-    <View style={style}>
       <View
-        style={styles.starRating}
+        style={[styles.starRating,style]}
         {...panResponder.panHandlers}
         onLayout={(e) => {
           width.current = e.nativeEvent.layout.width;
@@ -146,7 +145,6 @@ const StarRating: React.FC<StarRatingProps> = ({
           );
         })}
       </View>
-    </View>
   );
 };
 
@@ -206,11 +204,8 @@ const AnimatedIcon: React.FC<AnimatedIconProps> = ({
 const styles = StyleSheet.create({
   starRating: {
     flexDirection: 'row',
-    alignSelf: 'flex-start',
   },
-  star: {
-    marginHorizontal: 5,
-  },
+  star: {},
 });
 
 export default StarRating;
