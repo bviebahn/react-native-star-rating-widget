@@ -22,7 +22,6 @@ type AnimationConfig = {
 type StarRatingProps = {
   rating: number;
   onChange: (rating: number) => void;
-  minRating?: number;
   color?: string;
   emptyColor?: string;
   maxStars?: number;
