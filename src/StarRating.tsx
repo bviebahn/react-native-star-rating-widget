@@ -80,8 +80,9 @@ const StarRating: React.FC<StarRatingProps> = ({
             maxStars
           )
         );
-        if (newRating !== rating) {
-          onChange(enableHalfStar ? newRating : Math.ceil(newRating));
+        const finalRating = enableHalfStar ? newRating : Math.ceil(newRating);
+        if (finalRating !== rating) {
+          onChange(finalRating);
         }
       }
     },
