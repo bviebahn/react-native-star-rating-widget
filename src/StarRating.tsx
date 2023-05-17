@@ -49,6 +49,7 @@ const defaultAnimationConfig: Required<AnimationConfig> = {
 const StarRating: React.FC<StarRatingProps> = ({
   rating,
   maxStars = 5,
+  minRating = 0,
   starSize = 32,
   onChange,
   color = defaultColor,
@@ -74,7 +75,7 @@ const StarRating: React.FC<StarRatingProps> = ({
           return;
         }
         const newRating = Math.max(
-          0,
+          minRating,
           Math.min(
             Math.round((x / width.current) * maxStars * 2 + 0.2) / 2,
             maxStars
