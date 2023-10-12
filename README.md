@@ -12,6 +12,9 @@ A customizable, animated star rating component for React Native. Compatible with
 2. if not already installed, add [react-native-svg](https://github.com/react-native-community/react-native-svg)
 
 ## Usage
+This package exports an 
+
+### Interactive `StarRating` component
 ```js
 import StarRating from 'react-native-star-rating-widget';
 
@@ -26,7 +29,21 @@ const Example = () => {
 };
 ```
 
+### Non-Interactive `StarRatingDisplay` component
+```js
+import { StarRatingDisplay } from 'react-native-star-rating-widget';
+
+const Example = () => {
+  return (
+      <StarRating
+        rating={4.5}
+      />
+  );
+};
+```
+
 ## Props
+### `StarRating` Props
 | Name              | Type                                    | Default          | Description                                           |
 | ----------------- | --------------------------------------- | ---------------- | ----------------------------------------------------- |
 | rating            | number                                  | **REQUIRED**     | Rating Value. Should be between 0 and `maxStars`      |
@@ -44,6 +61,9 @@ const Example = () => {
 | animationConfig   | see [AnimationConfig](#animationConfig) | see [AnimationConfig](#animationConfig) | animation configuration object |
 | StarIconComponent | (props: { size: number; color: string; type: "full" \| "half" \| "empty"; }) => JSX.Element | [StarIcon](https://github.com/bviebahn/react-native-star-rating-widget/blob/master/src/StarIcon.tsx)                    | Icon component                                        |
 
+### `StarRatingDisplay` Props
+The `StarRatingDisplay` component accepts the same props as `StarRating` except `onChange`, `enableSwiping`, `onRatingStart`, `onRatingEnd` and `animationConfig`.
+
 ### AnimationConfig
 | Name     | Type               | Default           | Description                                |
 | -------- | ------------------ | ----------------- | ------------------------------------------ |
@@ -51,5 +71,3 @@ const Example = () => {
 | duration | number             | 300               | animation duration                         |
 | delay    | number             | 300               | animation delay when interaction has ended |
 | easing   | (number) => number | Easing.elastic(2) | animation easing function                  |
-
-A `StarRatingDisplay` component without any interaction functionality is exported as well.
