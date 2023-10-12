@@ -35,7 +35,7 @@ import { StarRatingDisplay } from 'react-native-star-rating-widget';
 
 const Example = () => {
   return (
-      <StarRating
+      <StarRatingDisplay
         rating={4.5}
       />
   );
