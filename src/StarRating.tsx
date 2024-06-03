@@ -138,6 +138,7 @@ const StarRating: React.FC<StarRatingProps> = ({
               style={starStyle}
             >
               <StarIconComponent
+                index={i}
                 type={starType}
                 size={starSize}
                 color={starType === 'empty' ? emptyColor : color}

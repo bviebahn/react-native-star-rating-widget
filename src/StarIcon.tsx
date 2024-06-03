@@ -3,6 +3,7 @@ import { I18nManager, ViewStyle } from 'react-native';
 import Svg, { Path, Rect } from 'react-native-svg';
 
 export type StarIconProps = {
+  index: number;
   size: number;
   color: string;
   type: 'full' | 'half' | 'empty';
@@ -47,11 +48,11 @@ const StarHalf = ({ size, color }: Omit<StarIconProps, 'type'>) => (
   </Svg>
 );
 
-const StarIcon = ({ type, size, color }: StarIconProps) => {
+const StarIcon = ({ index, type, size, color }: StarIconProps) => {
   const Component =
     type === 'full' ? StarFull : type === 'half' ? StarHalf : StarBorder;
 
-  return <Component size={size} color={color} />;
+  return <Component index={index} size={size} color={color} />;
 };
 
 export default StarIcon;
