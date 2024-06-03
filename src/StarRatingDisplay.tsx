@@ -35,6 +35,7 @@ const StarRatingDisplay = ({
         return (
           <View key={i} style={[styles.star, starStyle]}>
             <StarIconComponent
+              index={i}
               type={starType}
               size={starSize}
               color={starType === 'empty' ? emptyColor : color}
