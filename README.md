@@ -59,7 +59,7 @@ const Example = () => {
 | onRatingStart     | () => void                              | undefined        | called when user starts interaction                   |
 | onRatingEnd       | () => void                              | undefined        | called when user ends interaction                     |
 | animationConfig   | see [AnimationConfig](#animationConfig) | see [AnimationConfig](#animationConfig) | animation configuration object |
-| StarIconComponent | (props: { size: number; color: string; type: "full" \| "half" \| "empty"; }) => JSX.Element | [StarIcon](https://github.com/bviebahn/react-native-star-rating-widget/blob/master/src/StarIcon.tsx)                    | Icon component                                        |
+| StarIconComponent | (props: { index: number; size: number; color: string; type: "full" \| "half" \| "empty"; }) => JSX.Element | [StarIcon](https://github.com/bviebahn/react-native-star-rating-widget/blob/master/src/StarIcon.tsx)                    | Icon component                                        |
 
 ### `StarRatingDisplay` Props
 The `StarRatingDisplay` component accepts the same props as `StarRating` except `onChange`, `enableSwiping`, `onRatingStart`, `onRatingEnd` and `animationConfig`.
