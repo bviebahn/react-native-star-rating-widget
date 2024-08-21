@@ -132,6 +132,7 @@ const StarRating: React.FC<StarRatingProps> = ({
         }}
         testID={testID}
         accessible={true}
+        accessibilityRole='adjustable'
         accessibilityLabel={`star rating. ${stagedRating} stars. use custom actions to set rating.`}
         accessibilityActions={[
           { name: 'increment', label: 'increment' },
