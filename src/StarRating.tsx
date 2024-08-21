@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   PanResponder,
   StyleSheet,
@@ -8,6 +8,8 @@ import {
   Animated,
   Easing,
   I18nManager,
+  AccessibilityInfo,
+  AccessibilityActionEvent,
 } from 'react-native';
 import StarIcon, { StarIconProps } from './StarIcon';
 import { getStars } from './utils';
@@ -64,6 +66,7 @@ const StarRating: React.FC<StarRatingProps> = ({
 }) => {
   const width = React.useRef<number>();
   const [isInteracting, setInteracting] = React.useState(false);
+  const [stagedRating, setStagedRating] = useState(rating);
 
   const handleInteraction = React.useCallback(
     (x: number, isRTL = I18nManager.isRTL) => {
@@ -128,6 +131,38 @@ const StarRating: React.FC<StarRatingProps> = ({
           width.current = e.nativeEvent.layout.width;
         }}
         testID={testID}
+        accessible={true}
+        accessibilityLabel={`star rating. ${stagedRating} stars. use custom actions to set rating.`}
+        accessibilityActions={[
+          { name: 'increment', label: 'increment' },
+          { name: 'decrement', label: 'decrement' },
+          { name: 'activate', label: 'activate (default)' },
+        ]}
+        onAccessibilityAction={(event: AccessibilityActionEvent) => {
+          switch (event.nativeEvent.actionName) {
+            case 'increment':
+              if (stagedRating === maxStars) {
+                AccessibilityInfo.announceForAccessibility(`${stagedRating} stars`);
+              } else {
+                AccessibilityInfo.announceForAccessibility(`${stagedRating + 1} stars`);
+                setStagedRating(stagedRating + 1);
+              }
+
+              break;
+            case 'decrement':
+              if (stagedRating === 0) {
+                AccessibilityInfo.announceForAccessibility(`${stagedRating} stars`);
+              } else {
+                AccessibilityInfo.announceForAccessibility(`${stagedRating - 1} stars`);
+                setStagedRating(stagedRating - 1);
+              }
+
+              break;
+            case 'activate':
+              onChange(stagedRating);
+              break;
+          }
+        }}
       >
         {getStars(rating, maxStars).map((starType, i) => {
           return (
