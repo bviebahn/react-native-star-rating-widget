@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   PanResponder,
   StyleSheet,
@@ -8,6 +8,8 @@ import {
   Animated,
   Easing,
   I18nManager,
+  AccessibilityInfo,
+  AccessibilityActionEvent,
 } from 'react-native';
 import StarIcon, { StarIconProps } from './StarIcon';
 import { getStars } from './utils';
@@ -35,6 +37,43 @@ type StarRatingProps = {
   animationConfig?: AnimationConfig;
   StarIconComponent?: (props: StarIconProps) => JSX.Element;
   testID?: string;
+
+  /**
+   * The accessibility label used on the star component. If you want to include the staged star value, then
+   * include the token, %value%, in your label.
+   * 
+   * Default: star rating. %value% stars. use custom actions to set rating.
+   */
+  accessibilityLabel?: string;
+
+  /**
+   * The accessibility label for the increment action.
+   * 
+   * Default: increment
+   */
+  accessabilityIncrementLabel?: string;
+
+  /**
+   * The accessibility label for the decrement action.
+   * 
+   * Default: decrement
+   */
+  accessabilityDecrementLabel?: string;
+
+  /**
+   * The accessibility label for the activate action.
+   * 
+   * Default: activate (default)
+   */
+  accessabilityActivateLabel?: string;
+
+  /**
+   * When the user is adjusting the amount of stars, the voiceover reads as "n stars". This property will override
+   * that label. Use the token, %value%, in your label to specify where the staged value should go.
+   * 
+   * Default: %value% stars
+   */
+  accessibilityAdjustmentLabel?: string;
 };
 
 const defaultColor = '#fdd835';
@@ -61,9 +100,15 @@ const StarRating: React.FC<StarRatingProps> = ({
   starStyle,
   StarIconComponent = StarIcon,
   testID,
+  accessibilityLabel = 'star rating. %value% stars. use custom actions to set rating.',
+  accessabilityIncrementLabel = 'increment',
+  accessabilityDecrementLabel = 'decrement',
+  accessabilityActivateLabel = 'activate (default)',
+  accessibilityAdjustmentLabel = '%value% stars',
 }) => {
   const width = React.useRef<number>();
   const [isInteracting, setInteracting] = React.useState(false);
+  const [stagedRating, setStagedRating] = useState(rating);
 
   const handleInteraction = React.useCallback(
     (x: number, isRTL = I18nManager.isRTL) => {
@@ -128,6 +173,40 @@ const StarRating: React.FC<StarRatingProps> = ({
           width.current = e.nativeEvent.layout.width;
         }}
         testID={testID}
+        accessible={true}
+        accessibilityRole='adjustable'
+        accessibilityLabel={accessibilityLabel.replace(/%value%/g, stagedRating.toString())}
+        accessibilityActions={[
+          { name: 'increment', label: accessabilityIncrementLabel },
+          { name: 'decrement', label: accessabilityDecrementLabel },
+          { name: 'activate', label: accessabilityActivateLabel },
+        ]}
+        onAccessibilityAction={(event: AccessibilityActionEvent) => {
+          const incrementor = enableHalfStar ? 0.5 : 1;
+          switch (event.nativeEvent.actionName) {
+            case 'increment':
+              if (stagedRating >= maxStars) {
+                AccessibilityInfo.announceForAccessibility(accessibilityAdjustmentLabel.replace(/%value%/g, `${maxStars}`));
+              } else {
+                AccessibilityInfo.announceForAccessibility(accessibilityAdjustmentLabel.replace(/%value%/g, `${stagedRating + incrementor}`));
+                setStagedRating(stagedRating + incrementor);
+              }
+
+              break;
+            case 'decrement':
+              if (stagedRating <= 0) {
+                AccessibilityInfo.announceForAccessibility(accessibilityAdjustmentLabel.replace(/%value%/g, `${0}`));
+              } else {
+                AccessibilityInfo.announceForAccessibility(accessibilityAdjustmentLabel.replace(/%value%/g, `${stagedRating - incrementor}`));
+                setStagedRating(stagedRating - incrementor);
+              }
+
+              break;
+            case 'activate':
+              onChange(stagedRating);
+              break;
+          }
+        }}
       >
         {getStars(rating, maxStars).map((starType, i) => {
           return (

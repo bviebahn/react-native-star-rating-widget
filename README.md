@@ -60,6 +60,11 @@ const Example = () => {
 | onRatingEnd       | () => void                              | undefined        | called when user ends interaction                     |
 | animationConfig   | see [AnimationConfig](#animationConfig) | see [AnimationConfig](#animationConfig) | animation configuration object |
 | StarIconComponent | (props: { index: number; size: number; color: string; type: "full" \| "half" \| "empty"; }) => JSX.Element | [StarIcon](https://github.com/bviebahn/react-native-star-rating-widget/blob/master/src/StarIcon.tsx)                    | Icon component                                        |
+| accessibilityLabel | string  | star rating. %value% stars. use custom actions to set rating.  | The label used on the star component. |
+| accessabilityIncrementLabel | string | increment | The label for the increment action. |
+| accessabilityDecrementLabel | string  | decrement | The label for the decrement action. |
+| accessabilityActivateLabel | string | activate (default)  | The label for the activate action. |
+| accessibilityAdjustmentLabel | string  | %value% stars | The label that is announced after adjustment action |
 
 ### `StarRatingDisplay` Props
 The `StarRatingDisplay` component accepts the same props as `StarRating` except `onChange`, `enableSwiping`, `onRatingStart`, `onRatingEnd` and `animationConfig`.
