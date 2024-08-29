@@ -39,7 +39,7 @@ type StarRatingProps = {
   testID?: string;
 
   /**
-   * The accessibility label to display on the star component. If you want to display the staged star value, then
+   * The accessibility label used on the star component. If you want to include the staged star value, then
    * include the token, %value%, in your label.
    * 
    * Default: star rating. %value% stars. use custom actions to set rating.
