@@ -37,6 +37,35 @@ type StarRatingProps = {
   animationConfig?: AnimationConfig;
   StarIconComponent?: (props: StarIconProps) => JSX.Element;
   testID?: string;
+
+  /**
+   * The accessibility label to display on the star component. If you want to display the staged star value, then
+   * include the token, %value%, in your label.
+   * 
+   * Default: star rating. %value% stars. use custom actions to set rating.
+   */
+  accessibilityLabel?: string;
+
+  /**
+   * The accessibility label for the increment action.
+   * 
+   * Default: increment
+   */
+  accessabilityIncrementLabel?: string;
+
+  /**
+   * The accessibility label for the decrement action.
+   * 
+   * Default: decrement
+   */
+  accessabilityDecrementLabel?: string;
+
+  /**
+   * The accessibility label for the activate action.
+   * 
+   * Default: activate (default)
+   */
+  accessabilityActivateLabel?: string;
 };
 
 const defaultColor = '#fdd835';
@@ -63,6 +92,10 @@ const StarRating: React.FC<StarRatingProps> = ({
   starStyle,
   StarIconComponent = StarIcon,
   testID,
+  accessibilityLabel = 'star rating. %value% stars. use custom actions to set rating.',
+  accessabilityIncrementLabel = 'increment',
+  accessabilityDecrementLabel = 'decrement',
+  accessabilityActivateLabel = 'activate (default)',
 }) => {
   const width = React.useRef<number>();
   const [isInteracting, setInteracting] = React.useState(false);
@@ -133,29 +166,30 @@ const StarRating: React.FC<StarRatingProps> = ({
         testID={testID}
         accessible={true}
         accessibilityRole='adjustable'
-        accessibilityLabel={`star rating. ${stagedRating} stars. use custom actions to set rating.`}
+        accessibilityLabel={accessibilityLabel.replace(/%value%/g, stagedRating.toString())}
         accessibilityActions={[
-          { name: 'increment', label: 'increment' },
-          { name: 'decrement', label: 'decrement' },
-          { name: 'activate', label: 'activate (default)' },
+          { name: 'increment', label: accessabilityIncrementLabel },
+          { name: 'decrement', label: accessabilityDecrementLabel },
+          { name: 'activate', label: accessabilityActivateLabel },
         ]}
         onAccessibilityAction={(event: AccessibilityActionEvent) => {
+          const incrementor = enableHalfStar ? 0.5 : 1;
           switch (event.nativeEvent.actionName) {
             case 'increment':
-              if (stagedRating === maxStars) {
-                AccessibilityInfo.announceForAccessibility(`${stagedRating} stars`);
+              if (stagedRating >= maxStars) {
+                AccessibilityInfo.announceForAccessibility(`${maxStars} stars`);
               } else {
-                AccessibilityInfo.announceForAccessibility(`${stagedRating + 1} stars`);
-                setStagedRating(stagedRating + 1);
+                AccessibilityInfo.announceForAccessibility(`${stagedRating + incrementor} stars`);
+                setStagedRating(stagedRating + incrementor);
               }
 
               break;
             case 'decrement':
-              if (stagedRating === 0) {
-                AccessibilityInfo.announceForAccessibility(`${stagedRating} stars`);
+              if (stagedRating <= 0) {
+                AccessibilityInfo.announceForAccessibility(`${0} stars`);
               } else {
-                AccessibilityInfo.announceForAccessibility(`${stagedRating - 1} stars`);
-                setStagedRating(stagedRating - 1);
+                AccessibilityInfo.announceForAccessibility(`${stagedRating - incrementor} stars`);
+                setStagedRating(stagedRating - incrementor);
               }
 
               break;
