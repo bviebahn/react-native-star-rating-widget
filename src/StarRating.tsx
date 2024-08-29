@@ -66,6 +66,14 @@ type StarRatingProps = {
    * Default: activate (default)
    */
   accessabilityActivateLabel?: string;
+
+  /**
+   * When the user is adjusting the amount of stars, the voiceover reads as "n stars". This property will override
+   * that label. Use the token, %value%, in your label to specify where the staged value should go.
+   * 
+   * Default: %value% stars
+   */
+  accessibilityAdjustmentLabel?: string;
 };
 
 const defaultColor = '#fdd835';
@@ -96,6 +104,7 @@ const StarRating: React.FC<StarRatingProps> = ({
   accessabilityIncrementLabel = 'increment',
   accessabilityDecrementLabel = 'decrement',
   accessabilityActivateLabel = 'activate (default)',
+  accessibilityAdjustmentLabel = '%value% stars',
 }) => {
   const width = React.useRef<number>();
   const [isInteracting, setInteracting] = React.useState(false);
@@ -177,18 +186,18 @@ const StarRating: React.FC<StarRatingProps> = ({
           switch (event.nativeEvent.actionName) {
             case 'increment':
               if (stagedRating >= maxStars) {
-                AccessibilityInfo.announceForAccessibility(`${maxStars} stars`);
+                AccessibilityInfo.announceForAccessibility(accessibilityAdjustmentLabel.replace(/%value%/g, `${maxStars}`));
               } else {
-                AccessibilityInfo.announceForAccessibility(`${stagedRating + incrementor} stars`);
+                AccessibilityInfo.announceForAccessibility(accessibilityAdjustmentLabel.replace(/%value%/g, `${stagedRating + incrementor}`));
                 setStagedRating(stagedRating + incrementor);
               }
 
               break;
             case 'decrement':
               if (stagedRating <= 0) {
-                AccessibilityInfo.announceForAccessibility(`${0} stars`);
+                AccessibilityInfo.announceForAccessibility(accessibilityAdjustmentLabel.replace(/%value%/g, `${0}`));
               } else {
-                AccessibilityInfo.announceForAccessibility(`${stagedRating - incrementor} stars`);
+                AccessibilityInfo.announceForAccessibility(accessibilityAdjustmentLabel.replace(/%value%/g, `${stagedRating - incrementor}`));
                 setStagedRating(stagedRating - incrementor);
               }
 
