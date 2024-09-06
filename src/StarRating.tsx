@@ -41,28 +41,28 @@ type StarRatingProps = {
   /**
    * The accessibility label used on the star component. If you want to include the staged star value, then
    * include the token, %value%, in your label.
-   * 
+   *
    * Default: star rating. %value% stars. use custom actions to set rating.
    */
   accessibilityLabel?: string;
 
   /**
    * The accessibility label for the increment action.
-   * 
+   *
    * Default: increment
    */
   accessabilityIncrementLabel?: string;
 
   /**
    * The accessibility label for the decrement action.
-   * 
+   *
    * Default: decrement
    */
   accessabilityDecrementLabel?: string;
 
   /**
    * The accessibility label for the activate action.
-   * 
+   *
    * Default: activate (default)
    */
   accessabilityActivateLabel?: string;
@@ -70,7 +70,7 @@ type StarRatingProps = {
   /**
    * When the user is adjusting the amount of stars, the voiceover reads as "n stars". This property will override
    * that label. Use the token, %value%, in your label to specify where the staged value should go.
-   * 
+   *
    * Default: %value% stars
    */
   accessibilityAdjustmentLabel?: string;
@@ -174,8 +174,11 @@ const StarRating: React.FC<StarRatingProps> = ({
         }}
         testID={testID}
         accessible={true}
-        accessibilityRole='adjustable'
-        accessibilityLabel={accessibilityLabel.replace(/%value%/g, stagedRating.toString())}
+        accessibilityRole="adjustable"
+        accessibilityLabel={accessibilityLabel.replace(
+          /%value%/g,
+          stagedRating.toString()
+        )}
         accessibilityActions={[
           { name: 'increment', label: accessabilityIncrementLabel },
           { name: 'decrement', label: accessabilityDecrementLabel },
@@ -186,18 +189,35 @@ const StarRating: React.FC<StarRatingProps> = ({
           switch (event.nativeEvent.actionName) {
             case 'increment':
               if (stagedRating >= maxStars) {
-                AccessibilityInfo.announceForAccessibility(accessibilityAdjustmentLabel.replace(/%value%/g, `${maxStars}`));
+                AccessibilityInfo.announceForAccessibility(
+                  accessibilityAdjustmentLabel.replace(
+                    /%value%/g,
+                    `${maxStars}`
+                  )
+                );
               } else {
-                AccessibilityInfo.announceForAccessibility(accessibilityAdjustmentLabel.replace(/%value%/g, `${stagedRating + incrementor}`));
+                AccessibilityInfo.announceForAccessibility(
+                  accessibilityAdjustmentLabel.replace(
+                    /%value%/g,
+                    `${stagedRating + incrementor}`
+                  )
+                );
                 setStagedRating(stagedRating + incrementor);
               }
 
               break;
             case 'decrement':
               if (stagedRating <= 0) {
-                AccessibilityInfo.announceForAccessibility(accessibilityAdjustmentLabel.replace(/%value%/g, `${0}`));
+                AccessibilityInfo.announceForAccessibility(
+                  accessibilityAdjustmentLabel.replace(/%value%/g, `${0}`)
+                );
               } else {
-                AccessibilityInfo.announceForAccessibility(accessibilityAdjustmentLabel.replace(/%value%/g, `${stagedRating - incrementor}`));
+                AccessibilityInfo.announceForAccessibility(
+                  accessibilityAdjustmentLabel.replace(
+                    /%value%/g,
+                    `${stagedRating - incrementor}`
+                  )
+                );
                 setStagedRating(stagedRating - incrementor);
               }
 
