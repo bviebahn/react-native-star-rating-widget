@@ -34,5 +34,5 @@ const styles = StyleSheet.create({
 
     elevation: 3,
   },
-  title: { fontSize: 18, marginBottom: 8, color: '#222' },
+  title: { fontSize: 18, marginBottom: 8, color: '#222', textAlign: 'center' },
 });
