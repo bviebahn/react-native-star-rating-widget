@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import {
   PanResponder,
   StyleSheet,
@@ -22,48 +22,130 @@ type AnimationConfig = {
 };
 
 type StarRatingProps = {
+  /**
+   * Rating Value. Should be between 0 and `maxStars`.
+   */
   rating: number;
+
+  /**
+   * Change listener that gets called when rating changes.
+   */
   onChange: (rating: number) => void;
+
+  /**
+   * Custom color for the filled stars.
+   *
+   * @default '#fdd835'
+   */
   color?: string;
+
+  /**
+   * Custom color for the empty stars.
+   *
+   * @default color
+   */
   emptyColor?: string;
+
+  /**
+   * Total amount of stars to display.
+   *
+   * @default 5
+   */
   maxStars?: number;
+
+  /**
+   * Size of the stars.
+   *
+   * @default 32
+   */
   starSize?: number;
+
+  /**
+   * Enable half star ratings.
+   *
+   * @default true
+   */
   enableHalfStar?: boolean;
+
+  /**
+   * Enable swiping to rate.
+   *
+   * @default true
+   */
   enableSwiping?: boolean;
-  onRatingStart?: () => void;
-  onRatingEnd?: () => void;
+
+  /**
+   * Callback that gets called when the interaction starts, before `onChange`.
+   *
+   * @param rating The rating value at the start of the interaction.
+   */
+  onRatingStart?: (rating: number) => void;
+
+  /**
+   * Callback that gets called when the interaction ends, after `onChange`.
+   *
+   * @param rating The rating value at the end of the interaction.
+   */
+  onRatingEnd?: (rating: number) => void;
+
+  /**
+   * Custom style for the component.
+   */
   style?: StyleProp<ViewStyle>;
+
+  /**
+   * Custom style for the star component.
+   */
   starStyle?: StyleProp<ViewStyle>;
+
+  /**
+   * Custom animation configuration.
+   *
+   * @default
+   * {
+   *  easing: Easing.elastic(2),
+   *  duration: 300,
+   *  scale: 1.2,
+   *  delay: 300
+   * }
+   */
   animationConfig?: AnimationConfig;
+
+  /**
+   * Custom star icon component.
+   *
+   * @default StarIcon
+   */
   StarIconComponent?: (props: StarIconProps) => JSX.Element;
+
   testID?: string;
 
   /**
    * The accessibility label used on the star component. If you want to include the staged star value, then
    * include the token, %value%, in your label.
    *
-   * Default: star rating. %value% stars. use custom actions to set rating.
+   * @default 'star rating. %value% stars. use custom actions to set rating.'
    */
   accessibilityLabel?: string;
 
   /**
    * The accessibility label for the increment action.
    *
-   * Default: increment
+   * @default 'increment'
    */
   accessabilityIncrementLabel?: string;
 
   /**
    * The accessibility label for the decrement action.
    *
-   * Default: decrement
+   * @default 'decrement'
    */
   accessabilityDecrementLabel?: string;
 
   /**
    * The accessibility label for the activate action.
    *
-   * Default: activate (default)
+   * @default 'activate (default)'
    */
   accessabilityActivateLabel?: string;
 
@@ -71,7 +153,7 @@ type StarRatingProps = {
    * When the user is adjusting the amount of stars, the voiceover reads as "n stars". This property will override
    * that label. Use the token, %value%, in your label to specify where the staged value should go.
    *
-   * Default: %value% stars
+   * @default '%value% stars'
    */
   accessibilityAdjustmentLabel?: string;
 };
@@ -84,7 +166,7 @@ const defaultAnimationConfig: Required<AnimationConfig> = {
   delay: 300,
 };
 
-const StarRating: React.FC<StarRatingProps> = ({
+const StarRating = ({
   rating,
   maxStars = 5,
   starSize = 32,
@@ -105,35 +187,35 @@ const StarRating: React.FC<StarRatingProps> = ({
   accessabilityDecrementLabel = 'decrement',
   accessabilityActivateLabel = 'activate (default)',
   accessibilityAdjustmentLabel = '%value% stars',
-}) => {
+}: StarRatingProps) => {
   const width = React.useRef<number>();
   const [isInteracting, setInteracting] = React.useState(false);
-  const [stagedRating, setStagedRating] = useState(rating);
-
-  const handleInteraction = React.useCallback(
-    (x: number, isRTL = I18nManager.isRTL) => {
-      if (width.current) {
-        if (isRTL) {
-          handleInteraction(width.current - x, false);
-          return;
-        }
-        const newRating = Math.max(
-          0,
-          Math.min(
-            Math.round((x / width.current) * maxStars * 2 + 0.2) / 2,
-            maxStars
-          )
-        );
-        const finalRating = enableHalfStar ? newRating : Math.ceil(newRating);
-        if (finalRating !== rating) {
-          onChange(finalRating);
-        }
-      }
-    },
-    [enableHalfStar, maxStars, onChange, rating]
-  );
+  const [stagedRating, setStagedRating] = React.useState(rating);
 
   const panResponder = React.useMemo(() => {
+    const calculateRating = (x: number, isRTL = I18nManager.isRTL) => {
+      if (!width.current) return rating;
+
+      if (isRTL) {
+        return calculateRating(width.current - x, false);
+      }
+      const newRating = Math.max(
+        0,
+        Math.min(
+          Math.round((x / width.current) * maxStars * 2 + 0.2) / 2,
+          maxStars
+        )
+      );
+
+      return enableHalfStar ? newRating : Math.ceil(newRating);
+    };
+
+    const handleChange = (newRating: number) => {
+      if (newRating !== rating) {
+        onChange(newRating);
+      }
+    };
+
     return PanResponder.create({
       onStartShouldSetPanResponder: () => true,
       onStartShouldSetPanResponderCapture: () => true,
@@ -141,27 +223,41 @@ const StarRating: React.FC<StarRatingProps> = ({
       onMoveShouldSetPanResponderCapture: () => true,
       onPanResponderMove: (e) => {
         if (enableSwiping) {
-          handleInteraction(e.nativeEvent.locationX);
+          const newRating = calculateRating(e.nativeEvent.locationX);
+          handleChange(newRating);
         }
       },
       onPanResponderStart: (e) => {
-        onRatingStart?.();
-        handleInteraction(e.nativeEvent.locationX);
+        const newRating = calculateRating(e.nativeEvent.locationX);
+        onRatingStart?.(newRating);
+        handleChange(newRating);
         setInteracting(true);
       },
-      onPanResponderEnd: () => {
-        onRatingEnd?.();
+      onPanResponderEnd: (e) => {
+        const newRating = calculateRating(e.nativeEvent.locationX);
+        handleChange(newRating);
+        onRatingEnd?.(newRating);
+
+        setTimeout(() => {
+          setInteracting(false);
+        }, animationConfig.delay || defaultAnimationConfig.delay);
+      },
+      onPanResponderTerminate: () => {
+        // called when user drags outside of the component
         setTimeout(() => {
           setInteracting(false);
         }, animationConfig.delay || defaultAnimationConfig.delay);
       },
     });
   }, [
-    animationConfig.delay,
+    rating,
+    maxStars,
+    enableHalfStar,
+    onChange,
     enableSwiping,
-    handleInteraction,
     onRatingStart,
     onRatingEnd,
+    animationConfig.delay,
   ]);
 
   return (
@@ -179,6 +275,11 @@ const StarRating: React.FC<StarRatingProps> = ({
           /%value%/g,
           stagedRating.toString()
         )}
+        accessibilityValue={{
+          min: 0,
+          max: maxStars,
+          now: rating,
+        }}
         accessibilityActions={[
           { name: 'increment', label: accessabilityIncrementLabel },
           { name: 'decrement', label: accessabilityDecrementLabel },

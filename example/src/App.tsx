@@ -4,6 +4,7 @@ import { ScrollView, StyleSheet } from 'react-native';
 import BasicExample from './BasicExample';
 import CustomIconExample from './CustomIconExample';
 import StarRatingDisplayExample from './StarRatingDisplayExample';
+import ClearOnCurrentRatingTapExample from './ClearOnCurrentRatingTapExample';
 
 export default function App() {
   return (
@@ -11,6 +12,7 @@ export default function App() {
       <BasicExample />
       <CustomIconExample />
       <StarRatingDisplayExample />
+      <ClearOnCurrentRatingTapExample />
     </ScrollView>
   );
 }
@@ -21,6 +23,7 @@ const styles = StyleSheet.create({
   },
   content: {
     padding: 32,
+    paddingTop: 64,
     alignItems: 'center',
   },
 });

@@ -4,15 +4,62 @@ import StarIcon, { StarIconProps } from './StarIcon';
 import { getStars } from './utils';
 
 type Props = {
+  /**
+   * Rating Value. Should be between 0 and `maxStars`.
+   */
   rating: number;
+
+  /**
+   * Custom color for the filled stars.
+   *
+   * @default '#fdd835'
+   */
   color?: string;
+
+  /**
+   * Custom color for the empty stars.
+   *
+   * @default color
+   */
   emptyColor?: string;
+
+  /**
+   * Total amount of stars to display.
+   *
+   * @default 5
+   */
   maxStars?: number;
+
+  /**
+   * Size of the stars.
+   *
+   * @default 32
+   */
   starSize?: number;
-  enableHalfStar?: boolean;
+
+  /**
+   * Custom style for the component.
+   */
   style?: StyleProp<ViewStyle>;
+
+  /**
+   * Custom style for the star component.
+   */
   starStyle?: StyleProp<ViewStyle>;
+
+  /**
+   * Custom star icon component.
+   *
+   * @default StarIcon
+   */
   StarIconComponent?: (props: StarIconProps) => JSX.Element;
+
+  /**
+   * The accessibility label used on the star component.
+   *
+   * @default `star rating. ${rating} stars.`
+   */
+  accessibilityLabel?: string;
   testID?: string;
 };
 
@@ -28,9 +75,14 @@ const StarRatingDisplay = ({
   starStyle,
   StarIconComponent = StarIcon,
   testID,
+  accessibilityLabel = `star rating. ${rating} stars.`,
 }: Props) => {
   return (
-    <View style={[styles.starRating, style]} testID={testID}>
+    <View
+      style={[styles.starRating, style]}
+      accessibilityLabel={accessibilityLabel}
+      testID={testID}
+    >
       {getStars(rating, maxStars).map((starType, i) => {
         return (
           <View key={i} style={[styles.star, starStyle]}>

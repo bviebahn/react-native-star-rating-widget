@@ -42,32 +42,34 @@ const Example = () => {
 };
 ```
 
+See [example/src](example/src) for more examples.
+
 ## Props
 ### `StarRating` Props
-| Name              | Type                                    | Default          | Description                                           |
-| ----------------- | --------------------------------------- | ---------------- | ----------------------------------------------------- |
-| rating            | number                                  | **REQUIRED**     | Rating Value. Should be between 0 and `maxStars`      |
-| onChange          | (number) => void                        | **REQUIRED**     | called when rating changes                            |
-| maxStars          | number                                  | 5                | number of stars                                       |
-| starSize          | number                                  | 32               | star size                                             |
-| color             | string                                  | "#fdd835"        | star color                                            |
-| emptyColor        | string                                  | same as `color`  | empty star color                                      |
-| style             | object                                  | undefined        | optional style                                        |
-| starStyle         | object                                  | undefined        | optional star style                                   |
-| enableHalfStar    | boolean                                 | true             | enable or disable display of half stars               |
-| enableSwiping     | boolean                                 | true             | enable or disable swiping                             |
-| onRatingStart     | () => void                              | undefined        | called when user starts interaction                   |
-| onRatingEnd       | () => void                              | undefined        | called when user ends interaction                     |
+| Name              | Type                     | Default          | Description                                           |
+| ----------------- | -----------------------  | ---------------- | ----------------------------------------------------- |
+| rating            | number                   | **REQUIRED**     | Rating Value. Should be between 0 and `maxStars`      |
+| onChange          | (rating: number) => void | **REQUIRED**     | called when rating changes                            |
+| maxStars          | number                   | 5                | number of stars                                       |
+| starSize          | number                   | 32               | star size                                             |
+| color             | string                   | "#fdd835"        | star color                                            |
+| emptyColor        | string                   | same as `color`  | empty star color                                      |
+| style             | object                   | undefined        | optional style                                        |
+| starStyle         | object                   | undefined        | optional star style                                   |
+| enableHalfStar    | boolean                  | true             | enable or disable display of half stars               |
+| enableSwiping     | boolean                  | true             | enable or disable swiping                             |
+| onRatingStart     | (rating: number) => void | undefined        | called when the interaction starts, before `onChange` |
+| onRatingEnd       | (rating: number) => void | undefined        | called when the interaction starts, after `onChange`  |
 | animationConfig   | see [AnimationConfig](#animationConfig) | see [AnimationConfig](#animationConfig) | animation configuration object |
-| StarIconComponent | (props: { index: number; size: number; color: string; type: "full" \| "half" \| "empty"; }) => JSX.Element | [StarIcon](https://github.com/bviebahn/react-native-star-rating-widget/blob/master/src/StarIcon.tsx)                    | Icon component                                        |
-| accessibilityLabel | string  | star rating. %value% stars. use custom actions to set rating.  | The label used on the star component. |
-| accessabilityIncrementLabel | string | increment | The label for the increment action. |
-| accessabilityDecrementLabel | string  | decrement | The label for the decrement action. |
-| accessabilityActivateLabel | string | activate (default)  | The label for the activate action. |
-| accessibilityAdjustmentLabel | string  | %value% stars | The label that is announced after adjustment action |
+| StarIconComponent | (props: { index: number; size: number; color: string; type: "full" \| "half" \| "empty"; }) => JSX.Element | [StarIcon](https://github.com/bviebahn/react-native-star-rating-widget/blob/master/src/StarIcon.tsx) | Icon component                                            |
+| accessibilityLabel | string                  | star rating. %value% stars. use custom actions to set rating. | The label used on the star component |
+| accessabilityIncrementLabel | string         | increment        | The label for the increment action                    |
+| accessabilityDecrementLabel | string         | decrement        | The label for the decrement action.                   |
+| accessabilityActivateLabel  | string         | activate (default) | The label for the activate action.                  |
+| accessibilityAdjustmentLabel | string        | %value% stars    | The label that is announced after adjustment action   |
 
 ### `StarRatingDisplay` Props
-The `StarRatingDisplay` component accepts the same props as `StarRating` except `onChange`, `enableSwiping`, `onRatingStart`, `onRatingEnd` and `animationConfig`.
+The `StarRatingDisplay` component accepts mostly the same props as `StarRating` except those that are interaction related props such as `onChange`, `enableSwiping`, `onRatingStart` etc.
 
 ### AnimationConfig
 | Name     | Type               | Default           | Description                                |
