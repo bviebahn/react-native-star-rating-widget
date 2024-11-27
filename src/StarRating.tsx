@@ -277,8 +277,8 @@ const StarRating = ({
         )}
         accessibilityValue={{
           min: 0,
-          max: maxStars,
-          now: rating,
+          max: enableHalfStar ? maxStars * 2 : maxStars,
+          now: enableHalfStar ? rating * 2 : rating, // this has to be an integer
         }}
         accessibilityActions={[
           { name: 'increment', label: accessabilityIncrementLabel },
