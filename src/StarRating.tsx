@@ -68,6 +68,13 @@ type StarRatingProps = {
   enableHalfStar?: boolean;
 
   /**
+   * Enable quarter star ratings.
+   *
+   * @default false
+   */
+  enableQuarterStar?: boolean;
+
+  /**
    * Enable swiping to rate.
    *
    * @default true
@@ -174,6 +181,7 @@ const StarRating = ({
   color = defaultColor,
   emptyColor = color,
   enableHalfStar = true,
+  enableQuarterStar = false,
   enableSwiping = true,
   onRatingStart,
   onRatingEnd,
@@ -199,15 +207,21 @@ const StarRating = ({
       if (isRTL) {
         return calculateRating(width.current - x, false);
       }
-      const newRating = Math.max(
+      const newRating = enableQuarterStar ? Math.max(
+        0,
+        Math.min(
+          Math.round((x / width.current) * maxStars * 4 + 0.2) / 4,
+          maxStars
+        )
+      ) : Math.max(
         0,
         Math.min(
           Math.round((x / width.current) * maxStars * 2 + 0.2) / 2,
           maxStars
         )
-      );
+      )
 
-      return enableHalfStar ? newRating : Math.ceil(newRating);
+      return enableHalfStar || enableQuarterStar ? newRating : Math.ceil(newRating);
     };
 
     const handleChange = (newRating: number) => {
@@ -277,8 +291,8 @@ const StarRating = ({
         )}
         accessibilityValue={{
           min: 0,
-          max: enableHalfStar ? maxStars * 2 : maxStars,
-          now: enableHalfStar ? rating * 2 : rating, // this has to be an integer
+          max: enableQuarterStar ? maxStars * 4 : enableHalfStar ? maxStars * 2 : maxStars,
+          now: enableQuarterStar ? Math.round(rating * 4) : enableHalfStar ? Math.round(rating * 2) : Math.round(rating), // this has to be an integer
         }}
         accessibilityActions={[
           { name: 'increment', label: accessabilityIncrementLabel },
@@ -329,7 +343,7 @@ const StarRating = ({
           }
         }}
       >
-        {getStars(rating, maxStars).map((starType, i) => {
+        {getStars(rating, maxStars, enableQuarterStar).map((starType, i) => {
           return (
             <AnimatedIcon
               key={i}

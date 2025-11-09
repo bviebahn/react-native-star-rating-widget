@@ -55,6 +55,13 @@ type Props = {
   StarIconComponent?: (props: StarIconProps) => JSX.Element;
 
   /**
+   * Enable quarter star ratings.
+   *
+   * @default false
+   */
+  enableQuarterStar?: boolean;
+
+  /**
    * The accessibility label used on the star component.
    *
    * @default `star rating. ${rating} stars.`
@@ -71,6 +78,7 @@ const StarRatingDisplay = ({
   starSize = 32,
   color = defaultColor,
   emptyColor = color,
+  enableQuarterStar = false,
   style,
   starStyle,
   StarIconComponent = StarIcon,
@@ -83,7 +91,7 @@ const StarRatingDisplay = ({
       accessibilityLabel={accessibilityLabel}
       testID={testID}
     >
-      {getStars(rating, maxStars).map((starType, i) => {
+      {getStars(rating, maxStars, enableQuarterStar).map((starType, i) => {
         return (
           <View key={i} style={[styles.star, starStyle]}>
             <StarIconComponent

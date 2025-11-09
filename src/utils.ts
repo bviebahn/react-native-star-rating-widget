@@ -1,9 +1,27 @@
-export function getStars(rating: number, maxStars: number) {
+export function getStars(rating: number, maxStars: number, enableQuarterStar?: boolean) {
   return [...Array(maxStars)].map((_, i) => {
-    if (rating - i >= 1) {
+    const remainder = rating - i;
+    
+    if (remainder >= 1) {
       return 'full';
     }
-
-    return rating - i >= 0.5 ? 'half' : 'empty';
+    
+    if (enableQuarterStar) {
+      if (remainder >= 0.75) {
+        return 'three-quarter';
+      }
+      if (remainder >= 0.5) {
+        return 'half';
+      }
+      if (remainder >= 0.25) {
+        return 'quarter';
+      }
+    } else {
+      if (remainder >= 0.5) {
+        return 'half';
+      }
+    }
+    
+    return 'empty';
   });
 }
