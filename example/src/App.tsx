@@ -5,10 +5,12 @@ import BasicExample from './BasicExample';
 import CustomIconExample from './CustomIconExample';
 import StarRatingDisplayExample from './StarRatingDisplayExample';
 import ClearOnCurrentRatingTapExample from './ClearOnCurrentRatingTapExample';
+import StepPropExample from './StepPropExample';
 
 export default function App() {
   return (
     <ScrollView style={styles.container} contentContainerStyle={styles.content}>
+      <StepPropExample />
       <BasicExample />
       <CustomIconExample />
       <StarRatingDisplayExample />
