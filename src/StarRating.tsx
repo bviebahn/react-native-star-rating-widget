@@ -61,18 +61,11 @@ type StarRatingProps = {
   starSize?: number;
 
   /**
-   * Enable half star ratings.
+   * Step size for the rating.
    *
-   * @default true
+   * @default 'half'
    */
-  enableHalfStar?: boolean;
-
-  /**
-   * Enable quarter star ratings.
-   *
-   * @default false
-   */
-  enableQuarterStar?: boolean;
+  step?: 'half' | 'quarter' | 'full';
 
   /**
    * Enable swiping to rate.
@@ -180,8 +173,7 @@ const StarRating = ({
   onChange,
   color = defaultColor,
   emptyColor = color,
-  enableHalfStar = true,
-  enableQuarterStar = false,
+  step = 'half',
   enableSwiping = true,
   onRatingStart,
   onRatingEnd,
@@ -196,6 +188,7 @@ const StarRating = ({
   accessabilityActivateLabel = 'activate (default)',
   accessibilityAdjustmentLabel = '%value% stars',
 }: StarRatingProps) => {
+  const multiplier = step === 'quarter' ? 4 : step === 'half' ? 2 : 1;
   const width = React.useRef<number>();
   const [isInteracting, setInteracting] = React.useState(false);
   const [stagedRating, setStagedRating] = React.useState(rating);
@@ -207,21 +200,20 @@ const StarRating = ({
       if (isRTL) {
         return calculateRating(width.current - x, false);
       }
-      const newRating = enableQuarterStar ? Math.max(
-        0,
-        Math.min(
-          Math.round((x / width.current) * maxStars * 4 + 0.2) / 4,
-          maxStars
-        )
-      ) : Math.max(
-        0,
-        Math.min(
-          Math.round((x / width.current) * maxStars * 2 + 0.2) / 2,
-          maxStars
-        )
-      )
 
-      return enableHalfStar || enableQuarterStar ? newRating : Math.ceil(newRating);
+      const newRating =
+        step !== 'full'
+          ? Math.max(
+              0,
+              Math.min(
+                Math.round((x / width.current) * maxStars * multiplier + 0.2) /
+                  multiplier,
+                maxStars
+              )
+            )
+          : Math.ceil((x / width.current) * maxStars);
+
+      return newRating;
     };
 
     const handleChange = (newRating: number) => {
@@ -266,12 +258,13 @@ const StarRating = ({
   }, [
     rating,
     maxStars,
-    enableHalfStar,
     onChange,
     enableSwiping,
     onRatingStart,
     onRatingEnd,
     animationConfig.delay,
+    step,
+    multiplier,
   ]);
 
   return (
@@ -291,8 +284,8 @@ const StarRating = ({
         )}
         accessibilityValue={{
           min: 0,
-          max: enableQuarterStar ? maxStars * 4 : enableHalfStar ? maxStars * 2 : maxStars,
-          now: enableQuarterStar ? Math.round(rating * 4) : enableHalfStar ? Math.round(rating * 2) : Math.round(rating), // this has to be an integer
+          max: maxStars * multiplier,
+          now: Math.round(rating * multiplier),
         }}
         accessibilityActions={[
           { name: 'increment', label: accessabilityIncrementLabel },
@@ -300,7 +293,8 @@ const StarRating = ({
           { name: 'activate', label: accessabilityActivateLabel },
         ]}
         onAccessibilityAction={(event: AccessibilityActionEvent) => {
-          const incrementor = enableHalfStar ? 0.5 : 1;
+          const incrementor =
+            step === 'half' ? 0.5 : step === 'quarter' ? 0.25 : 1;
           switch (event.nativeEvent.actionName) {
             case 'increment':
               if (stagedRating >= maxStars) {
@@ -343,7 +337,7 @@ const StarRating = ({
           }
         }}
       >
-        {getStars(rating, maxStars, enableQuarterStar).map((starType, i) => {
+        {getStars(rating, maxStars, step).map((starType, i) => {
           return (
             <AnimatedIcon
               key={i}
