@@ -55,6 +55,13 @@ type Props = {
   StarIconComponent?: (props: StarIconProps) => JSX.Element;
 
   /**
+   * Step size for the rating.
+   *
+   * @default 'half'
+   */
+  step?: 'half' | 'quarter' | 'full';
+
+  /**
    * The accessibility label used on the star component.
    *
    * @default `star rating. ${rating} stars.`
@@ -71,6 +78,7 @@ const StarRatingDisplay = ({
   starSize = 32,
   color = defaultColor,
   emptyColor = color,
+  step = 'half',
   style,
   starStyle,
   StarIconComponent = StarIcon,
@@ -83,7 +91,7 @@ const StarRatingDisplay = ({
       accessibilityLabel={accessibilityLabel}
       testID={testID}
     >
-      {getStars(rating, maxStars).map((starType, i) => {
+      {getStars(rating, maxStars, step).map((starType, i) => {
         return (
           <View key={i} style={[styles.star, starStyle]}>
             <StarIconComponent
