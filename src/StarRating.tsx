@@ -99,6 +99,11 @@ type StarRatingProps = {
   starStyle?: StyleProp<ViewStyle>;
 
   /**
+   * Custom style for the star container.
+   */
+  starContainerStyle?: StyleProp<ViewStyle>;
+
+  /**
    * Custom animation configuration.
    *
    * @default
@@ -180,6 +185,7 @@ const StarRating = ({
   animationConfig = defaultAnimationConfig,
   style,
   starStyle,
+  starContainerStyle,
   StarIconComponent = StarIcon,
   testID,
   accessibilityLabel = 'star rating. %value% stars. use custom actions to set rating.',
@@ -270,7 +276,7 @@ const StarRating = ({
   return (
     <View style={style}>
       <View
-        style={styles.starRating}
+        style={[styles.starRating, starContainerStyle]}
         {...panResponder.panHandlers}
         onLayout={(e) => {
           width.current = e.nativeEvent.layout.width;
